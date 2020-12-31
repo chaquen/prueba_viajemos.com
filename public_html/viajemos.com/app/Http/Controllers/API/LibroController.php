@@ -99,7 +99,10 @@ class LibroController extends Controller
         try {
             Log::info('INFO: metodo '.__FUNCTION__." en ".__CLASS__); 
             $libros=Libro::where("ISBN",$id)->get();           
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Libros encontrados",false,Utilities::COD_RESPONSE_HTTP_OK,$libros);
+            if(count($libros) == 0){
+                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"Libro no fue encontrado",true,Utilities::COD_RESPONSE_HTTP_FORBIDDEN,$libros);
+            }
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Libro encontrado",false,Utilities::COD_RESPONSE_HTTP_OK,$libros);
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());

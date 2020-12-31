@@ -80,7 +80,18 @@ class EditorialController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            Log::info('INFO: metodo '.__FUNCTION__." en ".__CLASS__); 
+            $editorial=Editorial::where("id",$id)->get();  
+            if(count($editorial) == 0){
+                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"Editorial no existe",true,Utilities::COD_RESPONSE_HTTP_FORBIDDEN,$editorial);
+            }         
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Editorial encontradas",false,Utilities::COD_RESPONSE_HTTP_OK,$editorial);
+
+        } catch (Exception $ex) {
+            Log::critical($ex->getMessage());
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+        }
     }
 
     /**

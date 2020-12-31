@@ -21,9 +21,8 @@ class AutorController extends Controller
     {
         try {
             Log::info('INFO: metodo '.__FUNCTION__." en ".__CLASS__); 
-            $autores=Autor::all();           
+            $autores=Autor::all();      
             return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Libros encontrados",false,Utilities::COD_RESPONSE_HTTP_OK,$autores);
-
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
             return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
@@ -80,7 +79,18 @@ class AutorController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            Log::info('INFO: metodo '.__FUNCTION__." en ".__CLASS__); 
+            $autor=Autor::where("id",$id)->get();       
+            if(count($autor) == 0){
+                    return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"Autor no existe",true,Utilities::COD_RESPONSE_HTTP_FORBIDDEN,["autor_id"=>$id]);    
+            }    
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Libros encontrados",false,Utilities::COD_RESPONSE_HTTP_OK,$autor);
+
+        } catch (Exception $ex) {
+            Log::critical($ex->getMessage());
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+        }
     }
 
     /**
