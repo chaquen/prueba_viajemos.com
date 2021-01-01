@@ -16,7 +16,20 @@
         </div>
         <div class="form-group">
             <label for="title">editorial libro</label>
-            <input type="text" class="form-control" id="inpEditorial" placeholder="Ingrese la editorial del libro" v-model="form.editorial">   
+            <!--<input type="text" class="form-control" id="inpEditorial" placeholder="Ingrese la editorial del libro" v-model="form.editorial">   -->
+            <select class="form-control" id="slcEditoriales"
+                    v-model="editoriales"      
+                    :filterable="false"     
+                    :options="editoriales"
+            >
+            <option v-for="editorial in editoriales" 
+            :value="editorial.id"
+            :key="editorial.id"            
+            >
+                {{editorial.numero}}
+            </option>
+              
+            </select>
         </div>
         <div class="form-group">
             <label for="title">autor del libro</label>
@@ -50,12 +63,13 @@
                     editorial:'',
                     autor:'',
                     n_paginas:0,
-                },            
+                },           
+                editoriales:[], 
                 msn: {
                     mensaje:[]
                 }
             }
-        },
+        },    
     methods: 
         {
             crearLibro: function(event) {
@@ -84,8 +98,25 @@
                 }).catch(function(error){
                     console.log(error.error.data);
                 })
-            }
-        }
+            },            
+            selectedOption: function(value){
+                console.log("value : " + value);
+            },
+            /*OnSearch(search){
+                if(search.length) {
+                    this.search(search,this);
+                }
+                
+            },
+            search:this.debounce((search,vm)=>{
+                
+                axios.get("http://localhost:88/api/editorial")
+                .then(res => {
+                        console.log(res.data.data);
+                        vm.editoriales=res.data.data;
+                });
+            })*/
+        }        
   }
 </script>
 
