@@ -1,7 +1,8 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Libros from "@/components/Libros.vue"
 import CrearLibro from "@/components/CrearLibro.vue"
-import Editorial from "@/components/CrearEditorial.vue"
+import CrearAutor from "@/components/CrearAutor.vue"
+import CrearEditorial from "@/components/CrearEditorial.vue"
 
 const routes = [
   
@@ -11,20 +12,20 @@ const routes = [
     component: Libros,
   },
   {
-    path: "/CrearLibro",
-    name: "CrearLibro",
+    path: "/Libro",
+    name: "Libro",
     component: CrearLibro,
   },
   {
     path: "/Editorial",
     name: "Editorial",
-    component: Editorial,
-  }/*,
+    component: CrearEditorial,
+  },
   {
     path: "/Autor",
     name: "Autor",
-    component: Autor,
-  },*/
+    component: CrearAutor,
+  },
 ];
 
 const router = createRouter({

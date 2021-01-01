@@ -4,7 +4,8 @@
     <div id="nav">
      <router-link to="/">| Libros |</router-link> 
      <router-link to="/Editorial"> | Crear editorial |</router-link> 
-     <router-link to="/CrearLibro"> | Crear libro |</router-link>
+     <router-link to="/Autor"> | Crear Autor |</router-link>
+     <router-link to="/Libro"> | Crear libro |</router-link>
     </div>    
     <router-view />    
   </div>

@@ -17,23 +17,39 @@
         <div class="form-group">
             <label for="title">editorial libro</label>
             <!--<input type="text" class="form-control" id="inpEditorial" placeholder="Ingrese la editorial del libro" v-model="form.editorial">   -->
-            <select class="form-control" id="slcEditoriales"
-                    v-model="editoriales"      
+            <keep-alive>
+                <select class="form-control" id="slcEditoriales"
+                    v-model="form.editorial"      
                     :filterable="false"     
                     :options="editoriales"
-            >
-            <option v-for="editorial in editoriales" 
-            :value="editorial.id"
-            :key="editorial.id"            
-            >
-                {{editorial.numero}}
-            </option>
-              
-            </select>
+                >
+                <option v-for="editorial in editoriales" 
+                :value="editorial.id"
+                :key="editorial.id"            
+                >
+                    {{editorial.nombre}}
+                </option>
+                
+                </select>
+            </keep-alive>
         </div>
         <div class="form-group">
             <label for="title">autor del libro</label>
-            <input type="text" class="form-control" id="inpAutor" placeholder="Ingrese el autor del libro" v-model="form.autor">   
+            <keep-alive>
+                <select class="form-control" id="slcEditoriales"
+                    v-model="form.autor"      
+                    :filterable="false"     
+                    :options="autores"
+                >
+                <option v-for="autor in autores" 
+                :value="autor.id"
+                :key="autor.id"            
+                >
+                    {{autor.nombre}}
+                </option>
+                
+                </select>
+            </keep-alive>
         </div>
         <div class="form-group">
             <label for="title">número de páginas del libro</label>
@@ -65,6 +81,7 @@
                     n_paginas:0,
                 },           
                 editoriales:[], 
+                autores:[], 
                 msn: {
                     mensaje:[]
                 }
@@ -84,39 +101,42 @@
                     n_paginas:this.form.n_paginas,
                 })
                 .then(res => {                
-                    //this.libros = res.data.data;
-                    console.log(res.data);
                     if(res.data.cod == 400 || res.data.cod == 500)
                     {
-                        alert("Ha ocurrido un error");
-                        this.msn.mensaje = res.data.message;
+                        this.msn.mensaje=res.data.message;
+                        this.msn.mensaje=res.data.error;
                         return false;
                     }else if(res.data.cod == 200)
                     {
-                        alert(res.data.message);
+                        this.msn.mensaje = res.data.message;
                     }
                 }).catch(function(error){
-                    console.log(error.error.data);
+                    this.msn.mensaje = error.error.data;
                 })
             },            
             selectedOption: function(value){
                 console.log("value : " + value);
             },
-            /*OnSearch(search){
-                if(search.length) {
-                    this.search(search,this);
-                }
-                
-            },
-            search:this.debounce((search,vm)=>{
-                
-                axios.get("http://localhost:88/api/editorial")
-                .then(res => {
-                        console.log(res.data.data);
-                        vm.editoriales=res.data.data;
+            getDataApi: function(){
+                axios.get('http://localhost:88/api/editorial')
+                .then(response => {
+                    this.editoriales = response.data.data;
+                    this.msn.mensaje = response.data.message;                                            
+                }).catch(error => {
+                    console.log(error);
                 });
-            })*/
-        }        
+                axios.get('http://localhost:88/api/autor')
+                .then(response => {
+                    this.autores = response.data.data;
+                    this.msn.mensaje = response.data.message;
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+        }, 
+    created(){
+        this.getDataApi();
+    }       
   }
 </script>
 
