@@ -17,13 +17,11 @@ use App\Http\Controllers\API\AutorController;
 |
 */
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+Route::middleware('api')->resource('/libro', LibroController::class);
+Route::middleware('api')->resource('/editorial', EditorialController::class);
+Route::middleware('api')->resource('/autor', AutorController::class);
 
 Route::get('/', function(){
-    echo "HOLA MUNDO DESDE PHP";
+    echo "Servicio ok";
 });
-Route::resource('libro', LibroController::class);
-Route::resource('editorial', EditorialController::class);
-Route::resource('autor', AutorController::class);
+
