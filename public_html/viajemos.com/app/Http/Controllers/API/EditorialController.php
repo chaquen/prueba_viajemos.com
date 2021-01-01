@@ -26,7 +26,7 @@ class EditorialController extends Controller
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 
@@ -56,7 +56,7 @@ class EditorialController extends Controller
             ]);
             if ($validator->fails()) {
                 Log::error('Los datos ingresados no son válidos: ' . $validator->errors());
-                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,"Datos ingresados no son válidos",$validator->errors(),Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,$request->all());
+                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,"Datos ingresados no son válidos",$validator->errors(),Utilities::COD_RESPONSE_HTTP_OK,$request->all());
             }
             
             $editorial=Editorial::Create([
@@ -68,7 +68,7 @@ class EditorialController extends Controller
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 
@@ -84,13 +84,13 @@ class EditorialController extends Controller
             Log::info('INFO: metodo '.__FUNCTION__." en ".__CLASS__); 
             $editorial=Editorial::where("id",$id)->get();  
             if(count($editorial) == 0){
-                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"Editorial no existe",true,Utilities::COD_RESPONSE_HTTP_FORBIDDEN,$editorial);
+                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"Editorial no existe",true,Utilities::COD_RESPONSE_HTTP_OK,$editorial);
             }         
             return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Editorial encontradas",false,Utilities::COD_RESPONSE_HTTP_OK,$editorial);
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 

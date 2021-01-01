@@ -28,7 +28,7 @@ class LibroController extends Controller
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 
@@ -59,10 +59,11 @@ class LibroController extends Controller
                 'titulo' => 'required',
                 'sinopsis' => 'required|min:50',
                 'n_paginas' => 'required',
+                'autores_id' => 'required',
             ]);
             if ($validator->fails()) {
                 Log::error('Los datos ingresados no son válidos: ' . $validator->errors());
-                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,"Datos ingresados no son válidos",$validator->errors(),Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,$request->all());
+                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,"Datos ingresados no son válidos",$validator->errors(),Utilities::COD_RESPONSE_HTTP_OK,$request->all());
             }
             
             $libro=Libro::create([
@@ -73,10 +74,10 @@ class LibroController extends Controller
                 "n_paginas"=>$request->n_paginas,
             ]);
             if(is_null($libro->id)){
-                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"EL libro ".$request->titulo.", no fue creado",true,Utilities::COD_RESPONSE_HTTP_FORBIDDEN,$libro);    
+                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"EL libro ".$request->titulo.", no fue creado",true,Utilities::COD_RESPONSE_HTTP_OK,$libro);    
             }
             DB::table("autores_has_libros")->insert([
-                "autores_id" => $request->autor_id,
+                "autores_id" => $request->autores_i,
                 "libros_ISBN" => $request->ISBN
             ]);
 
@@ -84,7 +85,7 @@ class LibroController extends Controller
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 
@@ -106,7 +107,7 @@ class LibroController extends Controller
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 

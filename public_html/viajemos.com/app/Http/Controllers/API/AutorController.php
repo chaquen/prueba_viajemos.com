@@ -25,7 +25,7 @@ class AutorController extends Controller
             return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Libros encontrados",false,Utilities::COD_RESPONSE_HTTP_OK,$autores);
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 
@@ -55,7 +55,7 @@ class AutorController extends Controller
             ]);
             if ($validator->fails()) {
                 Log::error('Los datos ingresados no son válidos: ' . $validator->errors());
-                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,"Datos ingresados no son válidos",$validator->errors(),Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,$request->all());
+                return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_BAD_REQUEST,"Datos ingresados no son válidos",$validator->errors(),Utilities::COD_RESPONSE_HTTP_OK,$request->all());
             }
             
             $autor=Autor::Create([
@@ -67,7 +67,7 @@ class AutorController extends Controller
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 
@@ -83,13 +83,13 @@ class AutorController extends Controller
             Log::info('INFO: metodo '.__FUNCTION__." en ".__CLASS__); 
             $autor=Autor::where("id",$id)->get();       
             if(count($autor) == 0){
-                    return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"Autor no existe",true,Utilities::COD_RESPONSE_HTTP_FORBIDDEN,["autor_id"=>$id]);    
+                    return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"Autor no existe",true,Utilities::COD_RESPONSE_HTTP_OK,["autor_id"=>$id]);    
             }    
             return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Libros encontrados",false,Utilities::COD_RESPONSE_HTTP_OK,$autor);
 
         } catch (Exception $ex) {
             Log::critical($ex->getMessage());
-            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_ERROR,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_ERROR);
+            return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,$ex->getMessage(),true,Utilities::COD_RESPONSE_HTTP_OK);
         }
     }
 
