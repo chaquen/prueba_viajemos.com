@@ -10,6 +10,7 @@
           <th scope="col">Titulo</th>
           <th scope="col">Sinopsis</th>
           <th scope="col">Editorial</th>
+          <th scope="col">Autor</th>
         </tr>
       </thead>
       <tbody>
@@ -17,7 +18,8 @@
           <th scope="row">{{libro.id}}</th>
           <td>{{libro.titulo}}</td>
           <td>{{libro.sinopsis}}</td>
-          <td>{{libro.editoriales_id}}</td>
+          <td>{{libro.editorial}}</td>
+          <td>{{libro.autor}}</td>
         </tr>
       </tbody>
     </table> 
@@ -38,10 +40,25 @@
     created: function() {
       axios
         .get('http://localhost:88/api/libro')
-        .then(res => {
+        .then(res => {          
           
-          this.libros = res.data.data;
-          console.log(res.data.data);
+          let lib = res.data.data.map(function(d){
+            console.log(d);
+                if(d.titulo != undefined){
+                    return {
+                                id:d.id,
+                                titulo:d.titulo,
+                                sinopsis:d.sinopsis, 
+                                editorial: d.editorial.nombre,
+                                n_paginas:d.n_paginas,
+                                ISBN:d.ISBN,
+                                autor:d.autor.nombre+" "+d.autor.apellidos
+
+                                                               
+                            }                 
+                }
+            });
+            this.libros = lib;          
         })
     }
   }
