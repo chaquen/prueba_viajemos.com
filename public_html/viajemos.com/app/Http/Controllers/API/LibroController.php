@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Autor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +24,22 @@ class LibroController extends Controller
         //
         try {
             Log::info('INFO: metodo '.__FUNCTION__." en ".__CLASS__); 
-            $libros=Libro::all();           
+            $libros=Libro::all();         
+            foreach($libros as $key => $libro){
+                
+                $libros[$key]['autor'] = DB::table('autores_has_libros')
+                ->join('autores','autores.id','=','autores_id')
+                ->where("libros_ISBN",$libro['ISBN'])
+                ->select('autores.id','autores.nombre','autores.apellidos')
+                ->get()[0];
+                
+                $libros[$key]['editorial'] = DB::table('editoriales')
+                ->where("id",$libro['editoriales_id'])
+                ->select('id','nombre','sede')
+                ->get()[0];
+                
+            }
+            
             return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_OK,"Libros encontrados",false,Utilities::COD_RESPONSE_HTTP_OK,$libros);
 
         } catch (Exception $ex) {
@@ -77,7 +93,7 @@ class LibroController extends Controller
                 return Utilities::sendMessage(Utilities::COD_RESPONSE_HTTP_FORBIDDEN,"EL libro ".$request->titulo.", no fue creado",true,Utilities::COD_RESPONSE_HTTP_OK,$libro);    
             }
             DB::table("autores_has_libros")->insert([
-                "autores_id" => $request->autores_i,
+                "autores_id" => $request->autores_id,
                 "libros_ISBN" => $request->ISBN
             ]);
 

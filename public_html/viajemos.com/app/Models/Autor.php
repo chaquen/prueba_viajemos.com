@@ -35,6 +35,6 @@ class Autor extends Model
     ];
     public function libros()
     {
-        return $this->belongsToMany('libro','autores_has_libros','libros_ISBN','autores_id');
+        return $this->belongsToMany('libro','autores_has_libros','id','autores_id');
     }
 }
